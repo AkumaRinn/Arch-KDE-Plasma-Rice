@@ -1,0 +1,44 @@
+;;/////////////////////  BG Selecter //////////////////////////
+
+(defvar wallpaper_expanded false)
+
+(defvar wallpapers '[
+  {"name":"Name1","path":"/path/to/your/image/image.png"},
+  {"name":"Name2","path":"/path/to/your/image/image2.png"}
+]')
+
+
+(defwindow wallpaper_picker
+  :monitor 0
+  :stacking "bg"
+  :focusable true
+  :geometry (geometry
+              :x "20px"
+              :y "20px"
+              :width "300px"
+              :height "200px")
+  (wallpaper_widget))
+
+
+(defwidget wallpaper_widget []
+  (box :orientation "vertical"
+       :class "wallpaper-box"
+       :spacing 10
+
+    ;; Toggle button
+    (button
+      :onclick "eww update wallpaper_expanded=true"
+      (label :text "🖼 Wallpapers"))
+
+    ;; Expanded section
+    (box
+      :orientation "vertical"
+      :visible {wallpaper_expanded}
+      :spacing 5
+
+      (for wall in {wallpapers}
+        (button
+          :onclick "/home/your_user/.config/eww/Scripts/select_wallpaper.sh '${wall.path}'; eww update wallpaper_expanded=false"
+          (label :text {wall.name}))))))
+
+;; vim:ft=yuck
