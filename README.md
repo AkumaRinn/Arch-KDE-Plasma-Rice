@@ -1,15 +1,15 @@
 # Arch-KDE-Plasma-Rice
 Work in progress ... Will add step by step soon
 
-- Zsh
-- OhMyZsh
+- Zsh - shell interpreter
+- OhMyZsh some bs to help config theme on zsh
     ... *P10k*
-- Nerd Fonts
+- Nerd Fonts - fonts with emojis
     ... *JetBrainsMono Nerd Font*
-- Kitty Emulator
-- Kitten Themes
+- Kitty Emulator - terminal emulator
+- Kitten Themes 
     ... *Catppuccin-Mocha*
--Fastfetch
+-Fastfetch - see system
 - EWW - Creating Widgets
 The Official Docs for EWW: https://github.com/elkowar/eww
 
