@@ -3,20 +3,20 @@
 (defvar wallpaper_expanded false)
 
 (defvar wallpapers '[
-  {"name":"Name1","path":"/path/to/your/image/image.png"},
-  {"name":"Name2","path":"/path/to/your/image/image2.png"}
+  {"name":"Nanakusa","path":"/home/rinn3301/Pictures/GoatedImgs/nanakusa.png"},
+  {"name":"Red","path":"/home/rinn3301/Pictures/GoatedImgs/bg2.jpg"}
 ]')
 
 
 (defwindow wallpaper_picker
   :monitor 0
-  :stacking "bg"
-  :focusable true
+  :stacking "bottom"
+  :focusable false
+  :wm-ignore true
   :geometry (geometry
-              :x "20px"
-              :y "20px"
-              :width "300px"
-              :height "200px")
+              :anchor "center"
+              :width "600px"
+              :height "50px")
   (wallpaper_widget))
 
 
@@ -34,11 +34,52 @@
     (box
       :orientation "vertical"
       :visible {wallpaper_expanded}
-      :spacing 5
+      :spacing 10
 
-      (for wall in {wallpapers}
-        (button
-          :onclick "/home/your_user/.config/eww/Scripts/select_wallpaper.sh '${wall.path}'; eww update wallpaper_expanded=false"
-          (label :text {wall.name}))))))
+      (box
+        :orientation "horizontal"
+        :spacing 10
+
+        (for wall in {wallpapers}
+          (button
+            :onclick "/home/rinn3301/.config/eww/Scripts/select_wallpaper.sh ${wall.path}; eww update wallpaper_expanded=false"
+            (image
+              :path {wall.path}
+              :image-width 120
+              :image-height 70
+              :content-fit "cover")))))))
+
+;;////////////////////////////////////////////////////////
+
+(defwindow system_power
+  :monitor 0
+  :stacking "bottom"
+  :focusable false
+  :wm-ignore true
+  :geometry (geometry
+              :anchor "top right"
+              :width "100px"
+              :height "30px")
+  (power_system))
+
+
+
+(defwidget power_system []
+  (box
+    :orientation "horizontal"
+    :spacing 10
+    :class "power-bar"
+
+    ;; Power button
+    (button
+      :tooltip "System: OFF"
+      :onclick "notify-send 'Power button clicked!'"
+      (label :text "⏻"))
+
+    ;; Restart button
+    (button
+      :tooltip "System: RE"
+      :onclick "notify-send 'Restart button clicked!'"
+      (label :text "🔄"))))
 
 ;; vim:ft=yuck
