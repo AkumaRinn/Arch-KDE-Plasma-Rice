@@ -11,7 +11,8 @@ $surface-red: #f87070;
 
 .wallpaper-box {
   background-color: rgba(0, 0, 0, 0.7);  // 0.x = x0% opacity
-  border-radius: 0px;
+  border-radius: 8px;
+  border: 2px solid white;
   padding: 0px;
 }
 
@@ -29,9 +30,36 @@ $surface-red: #f87070;
 //Power Bar
 
 .power-bar {
-  background-color: rgba(50, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.7);
   border-radius: 8px;
+  border: 2px solid white;
   padding: 6px;
+}
+
+
+//Media Player
+
+.media-box {
+  background-color: rgba(0, 0, 0, 0.75);
+  border-radius: 8px;
+  border: 2px solid white;
+  padding: 8px 12px;
+}
+
+.media-box button {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+}
+
+.media-box button:hover {
+  background-color: rgba(255,255,255,0.1);
+  border-radius: 6px;
+}
+
+.media-artist {
+  font-size: 11px;
+  opacity: 0.7;
 }
 
 // vim:ft=scss

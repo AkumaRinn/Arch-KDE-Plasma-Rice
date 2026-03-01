@@ -3,8 +3,8 @@
 (defvar wallpaper_expanded false)
 
 (defvar wallpapers '[
-  {"name":"Nanakusa","path":"/home/rinn3301/Pictures/GoatedImgs/nanakusa.png"},
-  {"name":"Red","path":"/home/rinn3301/Pictures/GoatedImgs/bg2.jpg"}
+  {"name":"name1","path":"/path/to/img.jpg"},
+  {"name":"name2","path":"/path/to/img2.jpg"}
 ]')
 
 
@@ -42,7 +42,7 @@
 
         (for wall in {wallpapers}
           (button
-            :onclick "/home/rinn3301/.config/eww/Scripts/select_wallpaper.sh ${wall.path}; eww update wallpaper_expanded=false"
+            :onclick "/home/your_user/.config/eww/Scripts/select_wallpaper.sh ${wall.path}; eww update wallpaper_expanded=false"
             (image
               :path {wall.path}
               :image-width 120
@@ -81,5 +81,77 @@
       :tooltip "System: RE"
       :onclick "notify-send 'Restart button clicked!'"
       (label :text "🔄"))))
+
+
+;;//////////////// Media Player ///////////////////
+
+(defwindow system_media_player
+  :monitor 0
+  :stacking "bottom"
+  :focusable false
+  :wm-ignore true
+  :geometry (geometry
+              :orientation "vertical"
+              :anchor "top center"
+              :width "250px"
+              :height "150px")
+  (media_player))
+
+(defpoll media_status :interval "1s"
+  "playerctl status 2>/dev/null || echo 'Stopped'")
+
+(defpoll media_title :interval "1s"
+  "playerctl metadata title 2>/dev/null || echo 'Nothing Playing'")
+
+(defpoll media_artist :interval "1s"
+  "playerctl metadata artist 2>/dev/null || echo ''")
+
+(defpoll media_cover :interval "2s"
+  "playerctl metadata mpris:artUrl 2>/dev/null | sed 's|^file://||' | tr -d '\n'")
+
+(defwidget media_player []
+  (box
+    :orientation "vertical"
+    :spacing 10
+    :class "media-box"
+
+    ;; Song Info
+    (box
+      :orientation "vertical"
+      (label :text media_title :limit-width 200)
+      (label :text media_artist :class "media-artist"))
+
+    ;; Album cover
+    (image
+      :path media_cover
+      :image-width 80
+      :image-height 80
+      :content-fit "cover")
+
+    ;; Player Control
+    (box
+      :orientation "horizontal"
+      :spacing 10
+      :class "media-box"
+
+      ;; Previous
+      (button
+        :onclick "playerctl previous"
+        :tooltip "Previous"
+        (label :text "⏮"))
+
+      ;; Dynamic Play / Pause
+      (button
+        :onclick "playerctl play-pause"
+        :tooltip "Play / Pause"
+        (label :text {media_status == "Playing" ? "⏸" : "▶"}))
+
+      ;; Next
+      (button
+        :onclick "playerctl next"
+        :tooltip "Next"
+        (label :text "⏭"))
+    )))
+
 
 ;; vim:ft=yuck
