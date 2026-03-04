@@ -190,4 +190,92 @@
 
 
 
+;;////////////// Sound/Network Connection/Bluetooth ///////////
+
+(defpoll volume :interval "1s"
+  "pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | head -n1 | tr -d '%'")
+
+
+(defwindow system_volume
+  :monitor 0
+  :stacking "bottom"
+  :focusable false
+  :wm-ignore true
+  :geometry (geometry
+              :anchor "top right"
+              :x 0
+              :y 0
+              :width "90px"
+              :height "30px")
+  (volume_widget))
+
+
+(defwidget volume_widget []
+  (box
+    :orientation "horizontal"
+    :spacing 0
+    :class "sys-volume-box"
+
+    ;; Control volume with scroll on whole widget
+
+    :on-scroll-up "pactl set-sink-volume @DEFAULT_SINK@ +1%"
+    :on-scroll-down "pactl set-sink-volume @DEFAULT_SINK@ -1%"
+
+    ;; Decrease
+    (button
+      :onclick "pactl set-sink-volume @DEFAULT_SINK@ -1%"
+      (label :text "−"))
+
+    ;; Visual bar
+    (progress
+      :value 30;;volume         ;; the current volume (0-100)
+      :min 0
+      :max 100
+      :width "100%"
+      :height "6px"
+      :class "sys-volume-bar")
+
+    ;; Increase
+    (button
+      :onclick "pactl set-sink-volume @DEFAULT_SINK@ +1%"
+      (label :text "+"))
+
+    ;; Mute
+    (button
+      :onclick "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+      (label :text "🔇"))))
+
+
+;;///////// Date/Time ///////////////
+
+(defpoll current_time :interval "1s"
+  "date '+%H:%M'")
+
+(defpoll current_date :interval "60s"
+  "date '+%A, %d %B'")
+
+(defwindow system_clock
+  :monitor 0
+  :stacking "bottom"
+  :focusable false
+  :wm-ignore true
+  :geometry (geometry
+              :anchor "top right"
+              :x 110
+              :y 0
+              :width "160px"
+              :height "30px"
+              :spacing 30)
+  (clock_widget))
+
+(defwidget clock_widget []
+  (box
+    :orientation "horizontal"
+    :class "clock-box"
+
+    (label :text current_time :class "clock-time")
+    (label :text current_date :class "clock-date")))
+
+
+
 ;; vim:ft=yuck
